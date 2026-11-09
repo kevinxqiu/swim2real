@@ -1,0 +1,76 @@
+{
+  "frequencies": [
+    {
+      "frequency_hz": 0.5,
+      "marker_csv": "markers/markers_0.5.csv",
+      "real_video": "videos/real_0.5.mp4",
+      "crop_window": [
+        0,
+        null
+      ]
+    },
+    {
+      "frequency_hz": 0.75,
+      "marker_csv": "markers/markers_0.75.csv",
+      "real_video": "videos/real_0.75.mp4",
+      "crop_window": [
+        0,
+        null
+      ]
+    },
+    {
+      "frequency_hz": 1.0,
+      "marker_csv": "markers/markers_1.csv",
+      "real_video": "videos/real_1.mp4",
+      "crop_window": [
+        0,
+        null
+      ]
+    },
+    {
+      "frequency_hz": 1.25,
+      "marker_csv": "markers/markers_1.25.csv",
+      "real_video": "videos/real_1.25.mp4",
+      "crop_window": [
+        0,
+        null
+      ]
+    },
+    {
+      "frequency_hz": 1.5,
+      "marker_csv": "markers/markers_1.5.csv",
+      "real_video": "videos/real_1.5.mp4",
+      "crop_window": [
+        0,
+        null
+      ]
+    },
+    {
+      "frequency_hz": 1.75,
+      "marker_csv": "markers/markers_1.75.csv",
+      "real_video": "videos/real_1.75.mp4",
+      "crop_window": [
+        0,
+        null
+      ]
+    },
+    {
+      "frequency_hz": 2.0,
+      "marker_csv": "markers/markers_2.csv",
+      "real_video": "videos/real_2.mp4",
+      "crop_window": [
+        0,
+        null
+      ]
+    },
+    {
+      "frequency_hz": 2.25,
+      "marker_csv": "markers/markers_2.25.csv",
+      "real_video": "videos/real_2.25.mp4",
+      "crop_window": [
+        0,
+        null
+      ]
+    }
+  ]
+}

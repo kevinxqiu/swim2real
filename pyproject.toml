@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "swim2real"
+version = "1.0.0"
+description = "Vision-language guided calibration of a soft robotic fish simulator"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = ["numpy>=1.24"]
+
+[project.optional-dependencies]
+vlm = ["google-genai>=1.0", "openai>=1.0"]
+sim = ["mujoco>=3.0", "opencv-python-headless>=4.8"]
+baselines = ["scikit-optimize==0.10.2", "cma==4.4.1"]
+dev = ["pytest>=8", "ruff>=0.12"]
+
+[project.scripts]
+swim2real = "swim2real.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+swim2real = ["paper.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--basetemp=.pytest_cache/tmp"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/fixtures/prompt_builder_source.py" = ["ALL"]

@@ -1,0 +1,15 @@
+{
+  "archives": [
+    {
+      "filename": "runs.zip",
+      "json_files": 325,
+      "license": "CC-BY-4.0",
+      "proposal_replays": 242,
+      "run_histories": 318,
+      "sha256": "cec981e4ff4f0a894c7a66aac25d841d5ce48de9f9f69deebbb5fbef9332b5b8",
+      "size_bytes": 6103525,
+      "terminal_assessments": 32
+    }
+  ],
+  "schema_version": 1
+}

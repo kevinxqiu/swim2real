@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this code or the run records, please cite the paper below."
+title: "Swim2Real: Vision-Language Models for Simulator Calibration of a Soft Robotic Fish (code)"
+type: software
+license: MIT
+repository-code: "https://github.com/kevinxqiu/swim2real"
+url: "https://swim2real.github.io"
+authors:
+  - family-names: Qiu
+    given-names: Kevin
+  - family-names: Walker
+    given-names: Kyle Liam
+  - family-names: Michelis
+    given-names: Mike Yan
+  - family-names: Cygan
+    given-names: Marek
+  - family-names: Hughes
+    given-names: Josie
+keywords:
+  - sim-to-real
+  - system identification
+  - vision-language models
+  - soft robotics
+  - robotic fish
+preferred-citation:
+  type: article
+  title: "Swim2Real: Vision-Language Models for Simulator Calibration of a Soft Robotic Fish"
+  authors:
+    - family-names: Qiu
+      given-names: Kevin
+    - family-names: Walker
+      given-names: Kyle Liam
+    - family-names: Michelis
+      given-names: Mike Yan
+    - family-names: Cygan
+      given-names: Marek
+    - family-names: Hughes
+      given-names: Josie
+  journal: "IEEE Robotics and Automation Letters"
+  year: 2026
+  doi: "10.1109/LRA.2026.3752343"

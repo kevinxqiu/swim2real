@@ -1,0 +1,50 @@
+### Instruction
+
+You are diagnosing a MuJoCo fish simulation that does not match real-world behavior.
+Your task is to:
+1. Identify which parameters are MOST RESPONSIBLE for the current sim-real mismatch.
+2. Propose specific values for those parameters based on your physical reasoning.
+
+Your proposed values will be evaluated directly — propose the best values you can based on your physical reasoning.
+
+The fish has 9 tracked markers along its centerline (M0=nose to M8=tail tip).
+Error is measured as L2 distance between sim and real marker positions in
+head-frame coordinates, averaged across all 8 motor frequencies (0.5-2.25 Hz).
+
+This is optimization round <ROUND_NUMBER: 1-based round counter, printed as round index plus one>.
+
+### Current Parameters
+
+  Parameter          |   Current |     Bounds     | Description
+  ---------------------------------------------------------------------------
+<PARAMETER_TABLE: 16 rows, name | current value | bounds | description>
+
+### Full-Spectrum Sweep (all 8 frequencies)
+
+  Freq (Hz) | L2 (mm) | Per-Marker L2 [M0..M8] (mm) | Sim vel  | Real vel
+  -------------------------------------------------------------------------
+<FULL_SPECTRUM_SWEEP_TABLE: 8 frequency rows followed by one MEAN row>
+
+<HISTORY_SECTION: iteration history block, see Section 3>
+
+<REPEAT_WARNING: empty, or the warning block of Section 3>
+<VIDEO_SECTION: empty, or the media block of Section 3>
+### Output
+
+Select ANY parameters you believe are responsible for the mismatch and propose new values for each. You may change as few as 1 or as many as ALL parameters — use your physical reasoning to decide which parameters need adjustment and by how much.
+For each parameter, explain your physical reasoning for the proposed value.
+
+All proposed values MUST be within the bounds shown above.
+
+Respond with a single JSON object:
+{
+    "diagnosis": "<str: 2-4 sentences on what the data reveals about the mismatch>",
+    "selected_parameters": ["<param1>", "<param2>", ...],
+    "proposed_values": {"<param1>": <float>, "<param2>": <float>, ...},
+    "reasoning": "<str: why these parameters and values — include direction of change>",
+    "confidence": <float: 0.0 to 1.0>
+}
+
+
+========================================================================
+2. Variant: frequency sweep rows (rendered example)

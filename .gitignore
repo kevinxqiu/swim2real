@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.venv/
+.venv-*/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.env
+runs/
+*.mp4
+*.npz
+!tests/fixtures/*.npz
+.reference/

@@ -1,0 +1,6 @@
+{
+  "dataset": "data/dataset.json",
+  "simulator": {
+    "root": "/path/to/fishCREATE"
+  }
+}

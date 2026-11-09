@@ -1,0 +1,32 @@
+{
+  "max_tokens": 2048,
+  "messages": [
+    {
+      "content": [
+        {
+          "text": "### Instruction\n\nYou are diagnosing a MuJoCo fish simulation that does not match real-world behavior.\nYour task is to:\n1. Identify which parameters are MOST RESPONSIBLE for the current sim-real mismatch.\n2. Propose specific values for those parameters based on your physical reasoning.\n\nYour proposed values will be evaluated directly \u2014 propose the best values you can based on your physical reasoning.\n\nThe fish has 9 tracked markers along its centerline (M0=nose to M8=tail tip).\nError is measured as L2 distance between sim and real marker positions in\nhead-frame coordinates, averaged across all 8 motor frequencies (0.5-2.25 Hz).\n\nThis is optimization round 1.\n\n### Current Parameters\n\n  Parameter          |   Current |     Bounds     | Description\n  ---------------------------------------------------------------------------\n  fluidCoef_0        |    0.2000 | [0.0, 10.0]       | Pressure drag on blunt surfaces\n  fluidCoef_1        |    0.8400 | [0.0, 10.0]       | Skin friction on slender surfaces\n  fluidCoef_2        |    1.4800 | [0.0, 10.0]       | Rotational drag in water\n  fluidCoef_3        |    2.1200 | [0.0, 10.0]       | Kutta lift (circulation/fin effect)\n  fluidCoef_4        |    2.7600 | [0.0, 10.0]       | Magnus lift (spinning body parts)\n  motorArmLength     |    0.0270 | [0.01, 0.06]       | Crank arm driving tendons (m)\n  hingeStiffness_0   |    2.0796 | [0.1, 5.0]       | Joint 0 (body-tail0) stiffness\n  hingeStiffness_1   |    2.3932 | [0.1, 5.0]       | Joint 1 (tail0-tail1) stiffness\n  hingeStiffness_2   |    2.7068 | [0.1, 5.0]       | Joint 2 (tail1-tail2) stiffness\n  hingeStiffness_3   |    3.0204 | [0.1, 5.0]       | Joint 3 (tail2-tail3) stiffness\n  hingeStiffness_4   |    3.3340 | [0.1, 5.0]       | Joint 4 (tail3-tail4) stiffness\n  hingeDamping_0     |    1.4480 | [0.0, 2.0]       | Joint 0 (body-tail0) damping\n  hingeDamping_1     |    1.5760 | [0.0, 2.0]       | Joint 1 (tail0-tail1) damping\n  hingeDamping_2     |    1.7040 | [0.0, 2.0]       | Joint 2 (tail1-tail2) damping\n  hingeDamping_3     |    1.8320 | [0.0, 2.0]       | Joint 3 (tail2-tail3) damping\n  hingeDamping_4     |    1.9600 | [0.0, 2.0]       | Joint 4 (tail3-tail4) damping\n\n### Full-Spectrum Sweep (all 8 frequencies)\n\n  Freq (Hz) | L2 (mm) | Per-Marker L2 [M0..M8] (mm) | Sim vel  | Real vel\n  -------------------------------------------------------------------------\n      0.50  |    1.4 | [1, 1, 1, 1, 1, 1, 1, 1, 1] |   0.0180 |   0.0200\n      0.75  |    1.6 | [2, 2, 2, 2, 2, 2, 2, 2, 2] |   0.0180 |   0.0200\n      1.00  |    1.7 | [2, 2, 2, 2, 2, 2, 2, 2, 2] |   0.0180 |   0.0200\n      1.25  |    1.8 | [2, 2, 2, 2, 2, 2, 2, 2, 2] |   0.0180 |   0.0200\n      1.50  |    2.0 | [2, 2, 2, 2, 2, 2, 2, 2, 2] |   0.0180 |   0.0200\n      1.75  |    2.1 | [2, 2, 2, 2, 2, 2, 2, 2, 2] |   0.0180 |   0.0200\n      2.00  |    2.3 | [2, 2, 2, 2, 2, 2, 2, 2, 2] |   0.0180 |   0.0200\n      2.25  |    2.4 | [2, 2, 2, 2, 2, 2, 2, 2, 2] |   0.0180 |   0.0200\n      MEAN  |    1.9 |\n\n### Previous Optimization Rounds\n\n(first round)\n\n\n\n### Videos (multi-frequency diagnostic)\n\nYou are provided with 9 videos:\n1. Real video at 2.25 Hz \u2014 perspective-corrected footage\n2. Skeleton overlay at 0.50 Hz \u2014 sim (blue) vs real (red) centerline\n3. Skeleton overlay at 0.75 Hz \u2014 sim (blue) vs real (red) centerline\n4. Skeleton overlay at 1.00 Hz \u2014 sim (blue) vs real (red) centerline\n5. Skeleton overlay at 1.25 Hz \u2014 sim (blue) vs real (red) centerline\n6. Skeleton overlay at 1.50 Hz \u2014 sim (blue) vs real (red) centerline\n7. Skeleton overlay at 1.75 Hz \u2014 sim (blue) vs real (red) centerline\n8. Skeleton overlay at 2.00 Hz \u2014 sim (blue) vs real (red) centerline\n9. Skeleton overlay at 2.25 Hz \u2014 sim (blue) vs real (red) centerline\n\nThe skeleton overlays show sim (blue) vs real (red) 9-marker centerline on dark\nbackground with per-frame L2 error. Compare how the mismatch changes across\nfrequencies to identify which parameters need adjustment.\nEach video is provided as 16 uniformly sampled frames in temporal order.\n\n### Output\n\nSelect ANY parameters you believe are responsible for the mismatch and propose new values for each. You may change as few as 1 or as many as ALL parameters \u2014 use your physical reasoning to decide which parameters need adjustment and by how much.\nFor each parameter, explain your physical reasoning for the proposed value.\n\nAll proposed values MUST be within the bounds shown above.\n\nRespond with a single JSON object:\n{\n    \"diagnosis\": \"<str: 2-4 sentences on what the data reveals about the mismatch>\",\n    \"selected_parameters\": [\"<param1>\", \"<param2>\", ...],\n    \"proposed_values\": {\"<param1>\": <float>, \"<param2>\": <float>, ...},\n    \"reasoning\": \"<str: why these parameters and values \u2014 include direction of change>\",\n    \"confidence\": <float: 0.0 to 1.0>\n}\n",
+          "type": "text"
+        },
+        {
+          "image_url": {
+            "url": "data:image/jpeg;base64,ZnJhbWUgb25l"
+          },
+          "type": "image_url"
+        },
+        {
+          "image_url": {
+            "url": "data:image/jpeg;base64,ZnJhbWUgdHdv"
+          },
+          "type": "image_url"
+        }
+      ],
+      "role": "user"
+    }
+  ],
+  "model": "z-ai/glm-5.3-flash",
+  "reasoning": {
+    "effort": "low"
+  },
+  "seed": 120812,
+  "temperature": 0.0
+}

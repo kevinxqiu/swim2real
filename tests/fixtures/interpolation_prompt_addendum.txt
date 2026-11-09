@@ -1,0 +1,9 @@
+_TRAIN_MEAN_SENTENCE = "averaged across all 8 motor frequencies (0.5-2.25 Hz)."
+
+_TRAIN_MEAN_REPLACEMENT = (
+    "averaged across the 5 preregistered training motor frequencies (0.5, 1.0, 1.5, 2.0, and 2.25 Hz)."
+)
+
+_TRAIN_SWEEP_HEADING = "### Full-Spectrum Sweep (all 8 frequencies)"
+
+_TRAIN_SWEEP_REPLACEMENT = "### Training-Frequency Sweep (5 preregistered frequencies)"
