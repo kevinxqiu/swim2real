@@ -1,8 +1,8 @@
 # Swim2Real: Vision-Language Models for Simulator Calibration of a Soft Robotic Fish
 
-[![IEEE RA-L](https://img.shields.io/badge/IEEE%20RA--L-10.1109%2FLRA.2026.3752343-00629B.svg)](https://doi.org/10.1109/LRA.2026.3752343)
-[![arXiv](https://img.shields.io/badge/arXiv-2603.20827-b31b1b.svg?style=flat)](https://arxiv.org/abs/2603.20827)
+[![arXiv](https://img.shields.io/badge/arXiv-2603.20827-b31b1b.svg)](https://arxiv.org/abs/2603.20827)
 [![Project Page](https://img.shields.io/badge/Project-Page-0f9d58.svg)](https://swim2real.github.io)
+[![RA-L 2026](https://img.shields.io/badge/RA--L-2026-orange.svg)](https://doi.org/10.1109/LRA.2026.3752343)
 [![Run records](https://img.shields.io/badge/Run%20records-v1.0.0-6f42c1.svg)](https://github.com/kevinxqiu/swim2real/releases/tag/v1.0.0)
 [![CI](https://github.com/kevinxqiu/swim2real/actions/workflows/ci.yml/badge.svg)](https://github.com/kevinxqiu/swim2real/actions/workflows/ci.yml)
 [![Code: MIT](https://img.shields.io/badge/Code-MIT-green.svg)](LICENSE)
@@ -41,59 +41,48 @@ within 40 simulator evaluations.
 - **From simulation to the robot.** Ten open-loop hardware trials execute
   simulator-generated motor commands.
 
-This repository holds the calibration code, the analysis code and the run
-records. One CPU command recomputes the paper's calibration results from the
-released records in a few seconds, with no simulator, videos or API key.
-
-## Contents
-
-- [Installation](#installation)
-- [Recompute the paper's numbers](#recompute-the-papers-numbers)
-- [Run a calibration](#run-a-calibration)
-- [How it works](#how-it-works)
-- [Run records](#run-records)
-- [Repository structure](#repository-structure)
-- [Citation](#citation)
+This repository holds the calibration and analysis code, and its release holds
+the run records. One CPU command recomputes the paper's calibration results
+from the released records in a few seconds, with no simulator, videos or API
+key.
 
 ## Installation
 
-The analysis runs on a CPU with Python 3.10 or newer.
+The analysis runs on a CPU with Python 3.10 or newer. These commands install
+it and download the run records:
 
 ```bash
-git clone https://github.com/kevinxqiu/swim2real
-cd swim2real
+git clone https://github.com/kevinxqiu/swim2real && cd swim2real
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e .                          # analysis and the toy demo
-pip install -e '.[sim,vlm,baselines]'     # calibration: MuJoCo, VLM clients, BO and CMA-ES
+
+gh release download v1.0.0 -R kevinxqiu/swim2real -p runs.zip -p SHA256SUMS
+sha256sum -c SHA256SUMS
 ```
+
+Without the GitHub CLI, download the two files from the
+[release page](https://github.com/kevinxqiu/swim2real/releases/tag/v1.0.0).
 
 ## Recompute the paper's numbers
 
-Download the run records from
-[release v1.0.0](https://github.com/kevinxqiu/swim2real/releases/tag/v1.0.0)
-and check them:
-
 ```bash
-gh release download v1.0.0 -R kevinxqiu/swim2real -p runs.zip -p SHA256SUMS
-sha256sum -c SHA256SUMS
 swim2real reproduce --records runs.zip --out-json numbers.json --out-md numbers.md
 swim2real check-numbers numbers.json
 # prints a JSON report: 3212 values matched, 0 differing
 ```
 
 `reproduce` recomputes every calibration result in the paper from the run
-records in a few seconds, and `check-numbers` compares each value with
-[`records/paper_numbers.json`](records/paper_numbers.json), which gives its
-definition, where the paper reports it and the printed value.
-[`records/paper_numbers.md`](records/paper_numbers.md) lists them all. The main
-results are stored under these keys:
+records in a few seconds, and `check-numbers` compares each value with the
+recorded [`records/paper_numbers.json`](records/paper_numbers.json).
+[`records/paper_numbers.md`](records/paper_numbers.md) lists every value with
+its definition and where the paper reports it. The main results:
 
-| Result | Paper | Value | Key |
-| --- | --- | --- | --- |
-| Mean AUC40 difference, Swim2Real minus random directions (42 pairs) | Table III | −63.36 mm [−85.29, −44.74] | `replication.primary.random.mean_delta_mm` |
-| Mean AUC40 difference, Swim2Real minus signed-permuted directions | Table III | −53.17 mm [−74.22, −32.12] | `replication.primary.permuted.mean_delta_mm` |
-| Holm-adjusted p-value, against random and against permuted directions | Table III | 1.2 × 10⁻⁷ and 7.9 × 10⁻⁶ | `replication.primary.random.holm_p`, `replication.primary.permuted.holm_p` |
-| VLM proposals per run, Swim2Real | Table II | 16.1 | `fifteen_seed.arms.full_vlm_ls.proposals.mean` |
+| Result | Paper | Value |
+| --- | --- | --- |
+| Mean AUC40 difference, Swim2Real minus random directions (42&nbsp;pairs) | Table&nbsp;III | −63.36&nbsp;mm [−85.29,&nbsp;−44.74] |
+| Mean AUC40 difference, Swim2Real minus signed-permuted directions | Table&nbsp;III | −53.17&nbsp;mm [−74.22,&nbsp;−32.12] |
+| Holm-adjusted p-value, against random and against permuted directions | Table&nbsp;III | 1.2&nbsp;×&nbsp;10⁻⁷ and 7.9&nbsp;×&nbsp;10⁻⁶ |
+| VLM proposals per run, Swim2Real | Table&nbsp;II | 16.1 |
 
 AUC40 is the mean best-so-far marker error over the first 40 simulator
 evaluations. Brackets are 95% BCa intervals over seeds.
@@ -114,19 +103,14 @@ the pool recordings described by a dataset manifest (see
 [`configs/dataset.example.json`](configs/dataset.example.json)), a Gemini API
 key, and [FFmpeg](https://ffmpeg.org) with libx264 on the `PATH`, which encodes
 the overlay clips sent to the VLM (`sudo apt install ffmpeg` or
-`brew install ffmpeg`). A run configuration such as
-[`configs/example_run.json`](configs/example_run.json) only lists what differs
-from the paper's settings in
-[`src/swim2real/paper.json`](src/swim2real/paper.json):
-
-```json
-{
-  "dataset": "data/dataset.json",
-  "simulator": {"root": "/path/to/fishCREATE"}
-}
-```
+`brew install ffmpeg`). A run configuration lists only what differs from the
+paper's settings in [`src/swim2real/paper.json`](src/swim2real/paper.json), so
+[`configs/example_run.json`](configs/example_run.json) sets only two paths, to
+the dataset manifest and to the fishCREATE folder:
 
 ```bash
+pip install -e '.[sim,vlm,baselines]'     # MuJoCo, VLM clients, BO and CMA-ES
+cp configs/example_run.json my_run.json   # then edit its two paths
 export GEMINI_API_KEY=...                 # see .env.example
 swim2real validate-inputs --config my_run.json
 swim2real calibrate --config my_run.json --method full_vlm_ls --seed 1248 \
@@ -170,28 +154,19 @@ frequency; a table of marker errors and swimming speeds at every frequency;
 and the last eight rounds of history. The VLM proposes new values for any of
 the 16 parameters (five fluid force coefficients, the motor arm length, and the
 stiffness and damping of five body joints); the ones it leaves out keep their
-current values. The line search moves toward the proposed point by the full,
-half or quarter step and accepts the first step that lowers the eight-frequency
-marker error. The matched controls replace the VLM's direction with a random
-one or with a signed permutation of it, so every arm shares the same line
-search and budget. The prompt and the reply parser in
+current values. The prompt and the reply parser in
 [`src/swim2real/prompts/paper.py`](src/swim2real/prompts/paper.py) are the ones
 used for the paper's runs.
 
-<p align="center">
-  <img src="docs/images/replication_strip.png" width="55%"
-       alt="Top: mean best-so-far error against simulator evaluations; Swim2Real falls fastest and stays lowest, below the random and permuted controls. Bottom: paired AUC40 differences per seed, mostly negative, with means of -63.4 mm against random and -53.2 mm against permuted directions.">
-</p>
-<p align="center"><i>Fifty-seed replication: calibration progress and paired differences (negative values favor Swim2Real).</i></p>
-
 ## Run records
 
-The archive of release v1.0.0 is released under CC BY 4.0.
-
-| Archive | Size | Contents |
-| --- | --- | --- |
-| `runs.zip` | 6.1 MB | 318 run histories (eight methods × 15 seeds in the fifteen-seed study, three × 50 in the replication, two × 24 in the second-model experiment), the 32 assessments of the frequency-interpolation experiment, 242 proposal replays behind the backtracking statistics, and the study manifests. Each history holds every simulator evaluation with its parameters and marker errors, and, for every proposal round, the VLM reply and the proposal parsed from it |
-
+`runs.zip` of release v1.0.0 (6.1 MB, under CC BY 4.0) holds 318 run histories
+(eight methods × 15 seeds in the fifteen-seed study, three × 50 in the
+replication, two × 24 in the second-model experiment), the 32 assessments of
+the frequency-interpolation experiment, the 242 proposal replays behind the
+backtracking statistics, and the study manifests. Each history holds every
+simulator evaluation with its parameters and per-frequency marker errors, and,
+for every proposal round, the VLM reply and the proposal parsed from it.
 The data card, [dataset/README.md](dataset/README.md), documents every field
 and how the runs were made.
 
@@ -235,8 +210,8 @@ records under CC BY 4.0 ([dataset/LICENSE](dataset/LICENSE)). The fishCREATE
 simulator and the pool recordings are not covered by either license; see
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-The overview and replication figures are from the article accepted for
-publication in IEEE Robotics and Automation Letters
+The overview figure is from the article accepted for publication in IEEE
+Robotics and Automation Letters
 ([DOI 10.1109/LRA.2026.3752343](https://doi.org/10.1109/LRA.2026.3752343)).
 © 2026 IEEE. Personal use of this material is permitted. Permission from IEEE
 must be obtained for all other uses, in any current or future media, including

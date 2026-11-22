@@ -45,8 +45,8 @@ the models' replies from the paper's runs.
 
 ## Figures
 
-`docs/images/swim2real_overview.png` and `docs/images/replication_strip.png`
-are figures from the article accepted for publication in IEEE Robotics and
-Automation Letters (© 2026 IEEE; the full notice is in the README).
+`docs/images/swim2real_overview.png` is a figure from the article accepted for
+publication in IEEE Robotics and Automation Letters (© 2026 IEEE; the full
+notice is in the README).
 `docs/images/swim2real_hero.gif` is a clip from the project page,
 https://swim2real.github.io.
